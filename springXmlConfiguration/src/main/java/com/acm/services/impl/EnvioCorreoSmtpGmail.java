@@ -8,10 +8,14 @@ import java.util.logging.Logger;
 import java.util.stream.Stream;
 
 public class EnvioCorreoSmtpGmail implements IEnvioCorreo {
-    private Logger logger ;
+    private ILoggerService fileLoggerService ;
     private String host;
     private String password;
     private int puerto;
+
+    public void setFileLoggerService(ILoggerService otherLoggerService) {
+        this.fileLoggerService = otherLoggerService;
+    }
 
     public String getHost() {
         return host;
@@ -33,11 +37,14 @@ public class EnvioCorreoSmtpGmail implements IEnvioCorreo {
         this.puerto = puerto;
     }
 
+    public EnvioCorreoSmtpGmail(){}
+
     public EnvioCorreoSmtpGmail(ILoggerService loggerService) {
-        this.logger = loggerService.getLogger(EnvioCorreoSmtpGmail.class.getName());
+        this.fileLoggerService = loggerService;
     }
     @Override
     public void enviarCorreo(String from, String to, String subject, String body,String[] cc) {
+        var logger = fileLoggerService.getLogger(EnvioCorreoSmtpGmail.class.getName());
         var copias = String.join(",", cc);
         logger.log(Level.INFO, """
                 Correo enviado usando el servicio SMTP de gmail
@@ -49,6 +56,7 @@ public class EnvioCorreoSmtpGmail implements IEnvioCorreo {
                 """, Stream.of(from,to,subject,body,copias).toArray(String[]::new));
     }
     public void showConfig(){
+        var logger = fileLoggerService.getLogger(EnvioCorreoSmtpGmail.class.getName());
         var port = String.valueOf(puerto);
         logger.log(Level.INFO, """
                 Host: {0},
@@ -59,6 +67,7 @@ public class EnvioCorreoSmtpGmail implements IEnvioCorreo {
 
     @Override
     public void enviarCorreo(String from, String to, String subject, String body) {
+        var logger = fileLoggerService.getLogger(EnvioCorreoSmtpGmail.class.getName());
         logger.log(Level.INFO, """
                 Correo enviado usando el servicio SMTP de gmail
                 Remitente: {0}

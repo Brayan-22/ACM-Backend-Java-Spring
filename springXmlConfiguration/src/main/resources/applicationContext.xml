@@ -6,27 +6,55 @@
      http://www.springframework.org/schema/context
      http://www.springframework.org/schema/context/spring-context-3.1.xsd ">
     <!-- creacion de la dependencia-->
+    <!-- Indica a spring desde que carpeta raiz empezará a escanear recursivamente en busqueda de beans
+    definidos con ANOTACIONES(@Component,@Service,y otros stereotypes) o JAVACONFIG(@Configuration y @Bean)-->
     <context:component-scan base-package="com.acm"></context:component-scan>
+
+    <!-- Se habilita la inyección de valores de propiedades externas usando archivos (*.properties por ejemplo) y haciendo uso del modulo SpEL-->
     <context:property-placeholder location="classpath:email.properties"></context:property-placeholder>
     <!--
-    <context:annotation-config></context:annotation-config>
-    <context:load-time-weaver></context:load-time-weaver>
-    <context:mbean-export></context:mbean-export>
-    <context:mbean-server></context:mbean-server>
-    <context:property-override></context:property-override>
-    <context:property-placeholder></context:property-placeholder>
-    <context:spring-configured></context:spring-configured>
+    Declaracion de beans utilizando las configuraciones xml
     -->
-    <bean id="loggerService" class="com.acm.utils.impl.LoggerService" scope="singleton"></bean>
-    <bean id="envioCorreoGmail" class="com.acm.services.impl.EnvioCorreoSmtpGmail" autowire="constructor" lazy-init="true" scope="singleton">
+    <!--
+    Un bean puede o no tener un identificador que lo diferenciara de los otros beans manejados por el contenedor de IoC de spring:
+    @Doc: Crea un bean de LoggerService con identificador {consoleLoggerService}
+    -->
+    <bean id ="consoleLoggerService" class="com.acm.utils.impl.ConsoleLoggerService"></bean>
+    <!--
+    Un bean puede o no tener un identificador que lo diferenciara de los otros beans manejados por el contenedor de IoC de spring:
+    @Doc: Crea un bean de LoggerService con identificador {fileLoggerService}
+    -->
+    <bean id="fileLoggerService" class="com.acm.utils.impl.FileLoggerService"></bean>
+    <!--
+    Un bean puede o no tener un identificador que lo diferenciara de los otros beans manejados por el contenedor de IoC de spring:
+    @Doc: Crea un bean de Cliente sin identificador
+    -->
+    <bean class="com.acm.models.Cliente">
+        <constructor-arg name="identificador" value="100000"></constructor-arg>
+        <constructor-arg name="nombre" value="pepito"></constructor-arg>
+        <constructor-arg name="apellido" value="perez"></constructor-arg>
+        <constructor-arg name="email" value="pepito@correo.com"></constructor-arg>
+        <constructor-arg name="telefono" value="3000000000"></constructor-arg>
+    </bean>
+    <!--
+    Un bean manejado por el contenedor de IoC puede tener 2 alcances o scopes [singleton(alcance por defecto),prototype]
+    @Doc: Crea un bean de envioCorreoGmail con alcance singleton
+    -->
+    <bean id="envioCorreoGmail" class="com.acm.services.impl.EnvioCorreoSmtpGmail">
+    <!--Declaracion equivalente:<bean id="envioCorreoGmail" class="com.acm.services.impl.EnvioCorreoSmtpGmail" scope="singleton">-->
+    <property name="fileLoggerService" ref="fileLoggerService"></property>
         <property name="host" value="${mail.smtp.gmail.host}"></property>
         <property name="password" value="${mail.smtp.gmail.password}"></property>
         <property name="puerto" value="${mail.smtp.gmail.puerto}"></property>
     </bean>
-    <bean id="envioCorreoOutlook" class="com.acm.services.impl.EnvioCorreoSmtpOutlook" autowire="constructor" lazy-init="false" scope="prototype">
+    <!--
+    Un bean manejado por el contenedor de IoC puede tener 2 alcances o scopes [singleton(alcance por defecto),prototype]
+    @Doc: Crea un bean de envioCorreoGmail con alcance prototype
+    -->
+    <bean id="envioCorreoOutlook" class="com.acm.services.impl.EnvioCorreoSmtpOutlook" scope="prototype">
+        <property name="consoleLoggerService" ref="consoleLoggerService"></property>
         <property name="host" value="${mail.smtp.outlook.host}"></property>
         <property name="password" value="${mail.smtp.outlook.password}"></property>
         <property name="port" value="${mail.smtp.outlook.puerto}"></property>
     </bean>
-    <alias name="loggerService" alias="logger"></alias>
 </beans>
