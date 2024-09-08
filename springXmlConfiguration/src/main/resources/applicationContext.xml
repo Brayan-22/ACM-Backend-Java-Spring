@@ -1,0 +1,32 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation=" http://www.springframework.org/schema/beans
+     http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+     http://www.springframework.org/schema/context
+     http://www.springframework.org/schema/context/spring-context-3.1.xsd ">
+    <!-- creacion de la dependencia-->
+    <context:component-scan base-package="com.acm"></context:component-scan>
+    <context:property-placeholder location="classpath:email.properties"></context:property-placeholder>
+    <!--
+    <context:annotation-config></context:annotation-config>
+    <context:load-time-weaver></context:load-time-weaver>
+    <context:mbean-export></context:mbean-export>
+    <context:mbean-server></context:mbean-server>
+    <context:property-override></context:property-override>
+    <context:property-placeholder></context:property-placeholder>
+    <context:spring-configured></context:spring-configured>
+    -->
+    <bean id="loggerService" class="com.acm.utils.impl.LoggerService" scope="singleton"></bean>
+    <bean id="envioCorreoGmail" class="com.acm.services.impl.EnvioCorreoSmtpGmail" autowire="constructor" lazy-init="true" scope="singleton">
+        <property name="host" value="${mail.smtp.gmail.host}"></property>
+        <property name="password" value="${mail.smtp.gmail.password}"></property>
+        <property name="puerto" value="${mail.smtp.gmail.puerto}"></property>
+    </bean>
+    <bean id="envioCorreoOutlook" class="com.acm.services.impl.EnvioCorreoSmtpOutlook" autowire="constructor" lazy-init="false" scope="prototype">
+        <property name="host" value="${mail.smtp.outlook.host}"></property>
+        <property name="password" value="${mail.smtp.outlook.password}"></property>
+        <property name="port" value="${mail.smtp.outlook.puerto}"></property>
+    </bean>
+    <alias name="loggerService" alias="logger"></alias>
+</beans>
