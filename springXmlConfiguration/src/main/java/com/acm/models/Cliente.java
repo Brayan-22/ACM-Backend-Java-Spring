@@ -1,9 +1,10 @@
 package com.acm.models;
 
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class Cliente {
+public class Cliente implements Serializable {
     private Long identificador;
     private String nombre;
     private String apellido;
@@ -83,4 +84,6 @@ public class Cliente {
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
+
+
 }
