@@ -8,6 +8,7 @@
     <!-- creacion de la dependencia-->
     <context:component-scan base-package="com.acm">
     </context:component-scan>
+    <context:property-placeholder location="classpath:email.properties"></context:property-placeholder>
     <bean id="persona" class="com.acm.models.Persona">
         <property name="nombre" value="alejandro">
         </property>

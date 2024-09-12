@@ -1,29 +1,32 @@
 package com.acm;
 
 import com.acm.configuration.AppConfig;
-import com.acm.models.Persona;
-import com.acm.services.Cliente;
-import com.acm.services.EnvioCorreServidorSMTP;
-import com.acm.services.EnvioCorreosGmail;
-import com.acm.services.IEnvioCorreos;
+import com.acm.services.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.time.LocalDate;
 
 @Component
 public class Main {
+    @Value("#{10>11}")
+    private boolean servidor;
+    @Value("#{envioCorreoGmail.host}")
+    private String hostSMPTGMail;
 
     private Cliente cliente;
-    public Main(@Autowired Cliente cliente) {
+    private IEnvioCorreos envioCorreos;
+    public Main(@Autowired Cliente cliente, @Autowired @Qualifier("envioCorreoSMTP") IEnvioCorreos envioCorreos) {
         this.cliente = cliente;
+        this.envioCorreos = envioCorreos;
     }
     public void init(){
+        System.out.println(servidor);
+        System.out.println(hostSMPTGMail);
         cliente.enviarCorreoServicio();
     }
     public static void main(String[] args) {
