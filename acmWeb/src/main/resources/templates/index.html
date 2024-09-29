@@ -1,9 +1,11 @@
-<html xmlns:th ="http://www.thymeleaf.org">
-
+<html>
 <header>
     <h1>Hola mundo</h1>
 </header>
 <main>
-    <p th:text="${message}">
+    <form action="envioinfo" method="get">
+        <input type="text" name="titulo" >
+        <input type="submit">
+    </form>
 </main>
 </html>
