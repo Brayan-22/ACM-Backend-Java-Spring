@@ -154,6 +154,8 @@ de los métodos de los repositorios.
 Siempre es bueno revisar la documentación oficial y otros sitios para encontrar información útil, algunas recomendaciones son:
 - Sitio oficial de [Spring Framework][1]
 - [Baeldung][2] Es un sitio web especializado de Java, Spring Framework y SpringBoot
+  - Más sobre derived Queries : [DerivedQueries][3]
+  - Más sobre JPQL: [JPQLReference][4]
 
 _El presente proyecto trae un ejemplo práctico documentado usando Spring Data JPA_
 - Modelo relacional usado para la base de datos del proyecto
@@ -164,4 +166,5 @@ _El presente proyecto trae un ejemplo práctico documentado usando Spring Data J
 
 [1]: https://spring.io/projects/spring-data-jpa
 [2]: https://www.baeldung.com/
-[3]: ModeloRelacional.png
+[3]: https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html
+[4]: https://danielme.com/2022/01/19/curso-jakarta-ee-jpa-con-hibernate-el-lenguaje-jpql-hql-consultas-basicas-y-modificaciones/
